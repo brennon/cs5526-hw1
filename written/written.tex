@@ -107,11 +107,11 @@ $\rightarrow$ & $\rightarrow$ & $\rightarrow$ &  &  &
 
 \textbf{Solution:} In my opinion, using 3-grams creates the most realistic output text for both authors. If the n-grams are shorter, the text makes little sense. If the n-grams are longer, the frequencies of any given n-gram are much lower. This causes the model to copy large sections of text wholesale from the original text, which is not the intended result. In addition to this, using less history is much faster and requires far less memory. I attempted both models with 1-, 2-, 3-, and 4-grams. Samples of output text are provided with the source used to generate them in the repository linked at the beginning of this document.
 
-\item (50 points) Consider the Mushroom dataset from the UCI machine learning repository. Develop a Naive Bayes classifier and a tree-augmented Naive Bayes classifier to classify this dataset. Separate the data into training and test (describe what percentages you used) and report quantitative results after k-fold cross-validation. (Choose k suitably.) Interpret your experimental results and analyze if the tree-augmented classifier provides an improvement. You are welcome to code up the classifiers from scratch or use some ready made software for parts of the assignment, but must document what you did (e.g., software, languages used) and provide a public URL where any code/scripts written are made available.
-
 Finally, I should note that I used the \verb|Counter| class available from the UC Berkeley CS 188 course source code.\footnote{\url{https://s3-us-west-2.amazonaws.com/cs188websitecontent/projects/release/search/v1/001/docs/util.html}}
 
-\textbf{Solution:} For each classifier (see above for links to source and iPython notebooks), I used 10-fold cross validation to acheive the following results:
+\item (50 points) Consider the Mushroom dataset from the UCI machine learning repository. Develop a Naive Bayes classifier and a tree-augmented Naive Bayes classifier to classify this dataset. Separate the data into training and test (describe what percentages you used) and report quantitative results after k-fold cross-validation. (Choose k suitably.) Interpret your experimental results and analyze if the tree-augmented classifier provides an improvement. You are welcome to code up the classifiers from scratch or use some ready made software for parts of the assignment, but must document what you did (e.g., software, languages used) and provide a public URL where any code/scripts written are made available.
+
+\textbf{Solution:} For each classifier (see above for links to source and iPython notebooks giving much more detail), I used 10-fold cross validation to acheive the following results:
 
 \begin{table}[h]
 \centering
