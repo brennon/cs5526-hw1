@@ -1,7 +1,7 @@
 import re, util, pickle
 
 class MarkovGenerator():
-	def __init__(self, textfile, history=2):
+	def __init__(self, textfile=None, history=2):
 		self.file_path = textfile
 		self.history = history
 
@@ -9,9 +9,9 @@ class MarkovGenerator():
 		self.ngrams = None
 		self.starting_tuples = None
 
-		# self.read_file()
-		# self.parse_words()
-		# self.tuples = dict()
+		if textfile is not None:
+			self.word_list = self.read_file()
+			self.tuples, self.starting_tuples = self.parse_words(self.word_list, self.history)
 
 	def read_file(self):
 		"""
@@ -126,7 +126,11 @@ class MarkovGenerator():
 			>>> m.choose_next_word(('contains', 'a'), tuples)
 			'couple'
 		"""
-		return util.sample(ngrams[prefix])
+		try:
+			sample = util.sample(self.ngrams[prefix])
+			return sample
+		except:
+			return None
 
 	def generate_text(self, length):
 		"""
@@ -141,10 +145,12 @@ class MarkovGenerator():
 
 		for i in range(self.history, length):
 			new_prefix = tuple(generated_list[-self.history:])
-			# print new_prefix
 			next_word = self.choose_next_word(new_prefix, self.ngrams)
-			# print next_word
-			generated_list.append(next_word)
+			if next_word is None:
+				new_start = self.choose_start_tuple(self.starting_tuples)[0]
+				generated_list.append(new_start)
+			else:
+				generated_list.append(next_word)
 
 		return ' '.join(generated_list)
 
@@ -159,21 +165,21 @@ class MarkovGenerator():
 		pickle.dump(to_pickle, pickle_file)
 
 	@classmethod
-	def deserialize(cls, filename):
+	def deserialize(cls, filename, history):
 		pickle_file = open(filename, 'rb')
 		depickled = pickle.load(pickle_file)
 		pickle_file.close()
-		m = cls(None)
+		m = cls(None, 3)
 		m.ngrams = depickled['ngrams']
 		m.starting_tuples = depickled['starting_tuples']
 		m.history = depickled['history']
 		return m
 
 if __name__ == '__main__':
-	import doctest
-	doctest.testmod()
-	generator = MarkovGenerator('./doyle.txt', 1)
-	generator.serialize('./doyle-1.pickle')
-	# generator = MarkovGenerator.deserialize('./doyle-chapter.pickle')
+	# import doctest
+	# doctest.testmod()
+	generator = MarkovGenerator('./austen.txt', 3)
+	# generator = MarkovGenerator.deserialize('./austen-3.pickle', 3)
+	generator.serialize('./austen-3.pickle')
 	text = generator.generate_text(500)
 	print text
