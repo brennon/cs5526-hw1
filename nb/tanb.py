@@ -18,14 +18,14 @@ def create_nodes_from_header(filename):
     csv_file.close()
     return nodes
 
-def create_edges_from_nodes(nodes):
-    """
-        Returns a list of edges for an NBC given the list of nodes in *nodes*.
-        Assumes that the first node in *nodes* is the class, and all others are
-        features.
-    """
-    class_label = nodes[0]
-    return [[class_label, feature] for feature in nodes[1:]]
+# def create_edges_from_nodes(nodes):
+#     """
+#         Returns a list of edges for an NBC given the list of nodes in *nodes*.
+#         Assumes that the first node in *nodes* is the class, and all others are
+#         features.
+#     """
+#     class_label = nodes[0]
+#     return [[class_label, feature] for feature in nodes[1:]]
 
 def create_observations_from_csv(filename, fieldnames):
     """
@@ -117,7 +117,6 @@ def save_mutual_information(nodes, observations, Vdata):
     dump_file = open('tanbc-mi.json', 'w')
     json.dump(edges_for_tree, dump_file)
     dump_file.close()
-    print(edges_for_tree)
 
 def load_mutual_information():
     dump_file = open('tanbc-mi.json', 'r')
@@ -310,10 +309,7 @@ edges = []
 # Parse observations from file.
 observations = create_observations_from_csv(data_file_path, nodes)
 
-# Create GraphSkeleton and learn parameters for disconnected network.
-graphSkeleton = create_graph_skeleton(nodes, edges)
-bn = PGMLearner().discrete_mle_estimateparams(graphSkeleton, observations)
-
+# Calculate and save mutual information to a file.
 # save_mutual_information(nodes[1:], observations, bn.Vdata)
 
 # Load pre-calculated mutual information from file
@@ -334,8 +330,3 @@ graphSkeleton = create_graph_skeleton(nodes, edges)
 
 # Run 10-fold cross validation.
 run_cross_validation(10, observations, graphSkeleton)
-
-# save_mutual_information(nodes[18:], observations, bn.Vdata)
-
-# print(observations[0])
-# print(count_matching_observations({'cap_shape': 'x'}, observations))
