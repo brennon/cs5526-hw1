@@ -27,14 +27,14 @@ def create_edges_from_nodes(nodes):
     class_label = nodes[0]
     return [[class_label, feature] for feature in nodes[1:]]
 
-def create_observations_from_csv(filename):
+def create_observations_from_csv(filename, fieldnames):
     """
         Returns a dictionary of observations from data in the CSV file at *filename*.
         Assumes that the first row of this file contains node labels.
     """
     observations = []
     csv_file = open(filename)
-    reader = csv.DictReader(csv_file, fieldnames=nodes)
+    reader = csv.DictReader(csv_file, fieldnames=fieldnames)
     reader.next()
     for row in reader:
         observation = dict()
@@ -226,7 +226,7 @@ def test_splits(observations, graphSkeleton):
 data_file_path = 'mushroom.csv'
 nodes = create_nodes_from_header(data_file_path)
 edges = create_edges_from_nodes(nodes)
-observations = create_observations_from_csv(data_file_path)
+observations = create_observations_from_csv(data_file_path, nodes)
 graphSkeleton = create_graph_skeleton(nodes, edges)
 
 print('Graph skeleton created with {0} nodes and {1} edges:'.format(len(graphSkeleton.V), len(graphSkeleton.E)))
